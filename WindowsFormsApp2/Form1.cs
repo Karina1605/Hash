@@ -52,7 +52,6 @@ namespace WindowsFormsApp2
                     current = new CStudent(3, 1, 3);
                     current.FIO = new CFIO(new string[] { LastNametextBox.Text, FirstNametextBox.Text, PathronymictextBox.Text });
                     current.StudTicket = StudTickettextBox.Text;
-                    table.EndEnter();
                     current.Semestr = null;
                     table.Delete(current);
                     break;
@@ -61,7 +60,6 @@ namespace WindowsFormsApp2
                     current = new CStudent(3, 1, 3);
                     current.FIO = new CFIO(new string[] { LastNametextBox.Text, FirstNametextBox.Text, PathronymictextBox.Text });
                     current.StudTicket = StudTickettextBox.Text;
-                    table.EndEnter();
                     current.Semestr = null;
                     if (table.Search(current)!=null)
                         MessageBox.Show("Есть такой студент");
@@ -161,8 +159,6 @@ namespace WindowsFormsApp2
         //Выполнение основной задачи - вводится номер студенческого, если студент найден, вся информация о нем выводится в textbox
         private void TaskToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!table.IsCompleted)
-                table.EndEnter();
             setgroupBox1.Enabled = false;
             string r = Interaction.InputBox("Введите номер студенческого билета");
             if (r!="")
@@ -189,8 +185,6 @@ namespace WindowsFormsApp2
         //Отображение таблицы
         private void GetHashToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!table.IsCompleted)
-                table.EndEnter();
             table.LoadToScreen().Show();
         }
 
@@ -235,6 +229,11 @@ namespace WindowsFormsApp2
                 string ext = Path.GetExtension(WorkWithFile.FileName);
                 work.PutInfoToFile(table, ext);
             }
+        }
+
+        private void FileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

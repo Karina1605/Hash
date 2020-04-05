@@ -42,6 +42,12 @@
             this.TaskTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GetHashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FillingOneStudent = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Examspanel = new System.Windows.Forms.Panel();
+            this.DifTestspanel = new System.Windows.Forms.Panel();
+            this.Testspanel = new System.Windows.Forms.Panel();
             this.Backbutton = new System.Windows.Forms.Button();
             this.StudTickettextBox = new System.Windows.Forms.TextBox();
             this.PathronymictextBox = new System.Windows.Forms.TextBox();
@@ -61,12 +67,6 @@
             this.ExamscomboBox3 = new System.Windows.Forms.ComboBox();
             this.Setbutton = new System.Windows.Forms.Button();
             this.setgroupBox1 = new System.Windows.Forms.GroupBox();
-            this.Testspanel = new System.Windows.Forms.Panel();
-            this.DifTestspanel = new System.Windows.Forms.Panel();
-            this.Examspanel = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.FillingOneStudent.SuspendLayout();
             this.setgroupBox1.SuspendLayout();
@@ -97,32 +97,33 @@
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
             this.FileToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
             this.FileToolStripMenuItem.Text = "Файл...";
+            this.FileToolStripMenuItem.Click += new System.EventHandler(this.FileToolStripMenuItem_Click);
             // 
             // NewFileToolStripMenuItem
             // 
             this.NewFileToolStripMenuItem.Name = "NewFileToolStripMenuItem";
-            this.NewFileToolStripMenuItem.Size = new System.Drawing.Size(201, 26);
+            this.NewFileToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.NewFileToolStripMenuItem.Text = "Новый документ";
             this.NewFileToolStripMenuItem.Click += new System.EventHandler(this.откытьToolStripMenuItem_Click);
             // 
             // OpenToolStripMenuItem
             // 
             this.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem";
-            this.OpenToolStripMenuItem.Size = new System.Drawing.Size(201, 26);
+            this.OpenToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.OpenToolStripMenuItem.Text = "Открыть";
             this.OpenToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
             // SaveToolStripMenuItem
             // 
             this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
-            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(201, 26);
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.SaveToolStripMenuItem.Text = "Сохранить";
             this.SaveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // SaveAsToolStripMenuItem
             // 
             this.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem";
-            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(201, 26);
+            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.SaveAsToolStripMenuItem.Text = "Сохранить как";
             this.SaveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
@@ -207,6 +208,58 @@
             this.FillingOneStudent.TabIndex = 9;
             this.FillingOneStudent.TabStop = false;
             this.FillingOneStudent.Text = "Студент";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 441);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(74, 17);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Экзамены";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(10, 286);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(214, 17);
+            this.label2.TabIndex = 23;
+            this.label2.Text = "Дифференцированные зачеты";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 144);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 17);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Зачеты";
+            // 
+            // Examspanel
+            // 
+            this.Examspanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Examspanel.Location = new System.Drawing.Point(10, 461);
+            this.Examspanel.Name = "Examspanel";
+            this.Examspanel.Size = new System.Drawing.Size(690, 100);
+            this.Examspanel.TabIndex = 16;
+            // 
+            // DifTestspanel
+            // 
+            this.DifTestspanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DifTestspanel.Location = new System.Drawing.Point(10, 309);
+            this.DifTestspanel.Name = "DifTestspanel";
+            this.DifTestspanel.Size = new System.Drawing.Size(690, 100);
+            this.DifTestspanel.TabIndex = 15;
+            // 
+            // Testspanel
+            // 
+            this.Testspanel.AutoScroll = true;
+            this.Testspanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Testspanel.Location = new System.Drawing.Point(9, 164);
+            this.Testspanel.Name = "Testspanel";
+            this.Testspanel.Size = new System.Drawing.Size(690, 100);
+            this.Testspanel.TabIndex = 14;
             // 
             // Backbutton
             // 
@@ -394,58 +447,6 @@
             this.setgroupBox1.TabIndex = 1;
             this.setgroupBox1.TabStop = false;
             this.setgroupBox1.Text = "Установить кол-во";
-            // 
-            // Testspanel
-            // 
-            this.Testspanel.AutoScroll = true;
-            this.Testspanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Testspanel.Location = new System.Drawing.Point(9, 164);
-            this.Testspanel.Name = "Testspanel";
-            this.Testspanel.Size = new System.Drawing.Size(690, 100);
-            this.Testspanel.TabIndex = 14;
-            // 
-            // DifTestspanel
-            // 
-            this.DifTestspanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DifTestspanel.Location = new System.Drawing.Point(10, 309);
-            this.DifTestspanel.Name = "DifTestspanel";
-            this.DifTestspanel.Size = new System.Drawing.Size(690, 100);
-            this.DifTestspanel.TabIndex = 15;
-            // 
-            // Examspanel
-            // 
-            this.Examspanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Examspanel.Location = new System.Drawing.Point(10, 461);
-            this.Examspanel.Name = "Examspanel";
-            this.Examspanel.Size = new System.Drawing.Size(690, 100);
-            this.Examspanel.TabIndex = 16;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 144);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 17);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "Зачеты";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 286);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(214, 17);
-            this.label2.TabIndex = 23;
-            this.label2.Text = "Дифференцированные зачеты";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 441);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 17);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Экзамены";
             // 
             // Form1
             // 

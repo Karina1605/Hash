@@ -38,53 +38,14 @@ namespace WindowsFormsApp2
         
         
     }
-    /// <summary>
-    /// Класс, описывающий временную таблицу хранения данных при возникновении коллизий
-    /// Хеш-таблица реализована таким образом, что при коллизиях информация сохраняется во временной таблице,
-    /// и только когда ввод окончится, все оставшиеся поля займут свободные места в таблице
-    /// </summary>
-    class HelpTable
-    {
-        //Вместимость таблицы
-        const int Capacity = 100;
-        //Сам массив хранения
-        CStudent[] doubles;
-        //Свойство, показывающее, сколько сохранено эл-тов на данный момент
-        public int count { get; private set; }
-        //Стандартный конструктор
-        public HelpTable()
-        {
-            doubles = new CStudent[Capacity];
-            count = 0;
-        }
-        //Добавление элемента (по порядку)
-        public void Add(CStudent info)
-        {
-            doubles[count] = info;
-            count++;
-        }
-        //Индексатор для доступа к полям массива
-        public CStudent this [int i]
-        {
-            get {
-                return doubles[i];
-            }    
-        }
-        //Очистка таблицы
-        public void CleanTable ()
-        {
-            for (int i = 0; i < doubles.Length; ++i)
-                doubles[i] = null;
-            count = 0;
-        }
-    }
+    
     /// <summary>
     /// Класс хеш-таблицы
     /// </summary>
     public class MyHashTable
     {
-        //Свойство, показывающее, окончено ли заполнение (было ли выполнено распределения элементов из вспомогательной таблицы)
-        public bool IsCompleted { get; private set; }
+        const float coef1 = 0.61f;
+        const float coef2 = 0.5f;
         //Вместимость таблицы
         public readonly int Capacity;
         //Кол-ыо элементов на текущий момент
@@ -93,14 +54,11 @@ namespace WindowsFormsApp2
         OneField[] records;
         //Хеш-функция
         Func<string, int> HashFunc;
-        //Вспомогательная таблица
-        HelpTable help;
         //Загрузка таблицы из списка студентов, хеш-фукция передается в объект как параметр
         public MyHashTable(List<CStudent> cs, Func<string, int> func, int capacity =19):this(func, capacity)
         {
             for (int i = 0; i < cs.Count; ++i)
                 Add(cs.ElementAt(i), cs.ElementAt(i).StudTicket);
-            EndEnter();
         }
         //Загрузка из текстового файла
         public MyHashTable (string FileName,  Func<string, int> func, int capacity=19) : this(func, capacity)
@@ -111,16 +69,13 @@ namespace WindowsFormsApp2
         public MyHashTable(Func<string, int> func, int capacity=19)
         {
             HashFunc = func;
-            help = new HelpTable();
             records = new OneField[capacity];
             //Инициализация начальными значениями
             for (int i = 0; i < capacity; ++i)
                 records[i] = new OneField();
             Count = 0;
             Capacity = capacity;
-            IsCompleted = false;
         }
-        
         //Добавить элемент
         public void Add (CStudent info, string key)
         {
@@ -129,21 +84,28 @@ namespace WindowsFormsApp2
                 throw new Exception("Таблица полна");
             //Находим позицию вставки
             int pos = (HashFunc(key)) % records.Length;
-            //если она занята - помещаем во временную таблицу
-            if (records[pos].filling == Filling.Full)
-            {
-                help.Add(info);
-                IsCompleted = false;
-            }
-            //Иначе - присваиваем значение и меняем сотояния поля
-            else
+            //если она занята - находим следующую свободную позицию методом линейного опробования
+            //Исправлено, теперь поиск следющий ячейки начинается с ячейки вычисленной хеш-функцией
+            //Так как использовано линейное опробование, элементы будут заполнятся подряд, поэтому мы сначала доходим
+            //до последнего элемента цепочки по указателям (не подряд т.к. между ними уже все ячейки забиты)
+            //и ищем следующую свободную за последней ячейкой цепочки
+            while (records[pos].next != null)
+                pos = (int)records[pos].next;
+            int last = pos;
+            while (records[last].filling == Filling.Full)
+                last = (last + 1) % Capacity;
+            if (last == pos)
             {
                 records[pos].info = info;
                 records[pos].filling = Filling.Full;
-                Count++;
-                
             }
-                
+            else
+            {
+                records[last].info = info;
+                records[pos].next = last;
+                records[last].filling = Filling.Full;
+            }
+            Count++;
         }
         //Поиск студента с указанными ФИО и номером студенческого
         public CStudent Search (CStudent example)
@@ -156,7 +118,7 @@ namespace WindowsFormsApp2
             {
                 //Если ячейка полна - сверяем ее, и, если все поля совпали - возвращаем этого студента
                 if (records[p].filling == Filling.Full)
-                    if (records[p].info.CompareTo(example) == 0)
+                    if (records[p].info.StudTicket.CompareTo(example.StudTicket) == 0)
                         return records[p].info;
                     else
                     //иначе, если указателей на последующие эл-ты нет - конец цепочки
@@ -261,40 +223,7 @@ namespace WindowsFormsApp2
                 }
             }
         }
-        //Окончание ввода - перенос всех полей из временной таблицы
-        public void EndEnter()
-        {
-            int last = 0;
-            bool isadded = false;
-            //Для всех эл-тов во вспомогательной таблице
-            for (int i=0; i<help.count; ++i)
-            {
-                isadded = false;
-                //Если хеш-таблица заполнена - исключение
-                if (Count == Capacity)
-                    throw new Exception("Данных слишеом много");
-                //Поиск значение хеша, по которому должно было находиться значение
-                int pos = HashFunc(help[i].StudTicket);
-                //пока не добавлено
-                while (!isadded)
-                {
-                    //Если ячейка не заполнена - помещаем в нее
-                    if (records[last].filling != Filling.Full)
-                    {
-                        records[last].info = help[i];
-                        records[last].filling = Filling.Full;
-                        records[pos].next = last;
-                        isadded = true;
-                    }
-                    else
-                        last++;
-                }
-            }
-            //Чистка вспомогательной таблицы
-            help.CleanTable();
-            //Заполнение таблицы окончено
-            IsCompleted = true;
-        }
+        
         //Отображение таблицы в новой форме
         public Form LoadToScreen ()
         {

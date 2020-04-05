@@ -8,6 +8,9 @@ using System.Xml.Serialization;
 using System.Windows.Forms;
 using System.Drawing;
 
+
+//В силу того, что кол-во зачетов и экзаменов у каждого студентак может варьироваться, было принято решение
+//сделать gui приложение для удобства заполнения
 namespace WindowsFormsApp2
 {
     /// <summary>
